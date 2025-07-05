@@ -6,8 +6,15 @@ public class InterfaceUsuario {
 
     Scanner sc = new Scanner(System.in);
 
+    public String Categorias (){
+        System.out.print("Informe o tipo de financiamento(CASA/APARTAMENTO/TERRENO): ");
+        String tipo = sc.nextLine();
+        return tipo;
+    }
+
+
     // Recebe o valor do imóvel, com o teste "SE for maior que zero"
-    public Double valorImovel(){
+    public double valorImovel(){
         double valor;
         do {
             System.out.print("Informe o valor do Imóvel: ");
@@ -34,7 +41,7 @@ public class InterfaceUsuario {
     }
 
     // Recebe o valor da taxa de juros anual, com o teste "SE for maior que zero"
-    public Double taxaJurosAnual(){
+    public double taxaJurosAnual(){
         double juros;
         do {
             System.out.print("Informe o taxa juros: ");

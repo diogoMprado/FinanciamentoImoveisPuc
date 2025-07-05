@@ -1,13 +1,13 @@
 package modelo;
 
-public class Financiamento {
+public abstract class Financiamento {
 
-    private Double valorImovel;
-    private Integer prazoFinanciamento;
-    private Double taxaJurosAnual;
+    protected double valorImovel;
+    protected int prazoFinanciamento;
+    protected double taxaJurosAnual;
 
     // Construtor de "Financiamento"
-    public Financiamento(Double valorImovel, Double taxaJurosAnual, int prazoFinanciamento) {
+    public Financiamento(double valorImovel, double taxaJurosAnual, int prazoFinanciamento) {
         this.valorImovel = valorImovel;
         this.taxaJurosAnual = taxaJurosAnual;
         this.prazoFinanciamento = prazoFinanciamento;
@@ -17,28 +17,27 @@ public class Financiamento {
         return prazoFinanciamento;
     }
 
-    public Double getTaxaJurosAnual() {
+    public double getTaxaJurosAnual() {
         return taxaJurosAnual;
     }
 
-    public Double getValorImovel() {
+    public double getValorImovel() {
         return valorImovel;
     }
 
-    public Double calcularPagamentoMensal(){
-        return valorImovel / (prazoFinanciamento * 12) * (1 + (taxaJurosAnual / 12));
+    public double calcularPagamentoMensal(){
+        return this.valorImovel / (this.prazoFinanciamento * 12) * (1 + (this.taxaJurosAnual / 12));
     }
 
-    public Double calcularTotalPagamento(){
-        return calcularPagamentoMensal() * prazoFinanciamento * 12;
+    public double calcularTotalPagamento(){
+        return calcularPagamentoMensal() * (prazoFinanciamento * 12);
     }
-
-    @Override
     public String toString() {
         return "Valor financiamento do imóvel: R$ " + String.format("%.2f",valorImovel) +
-                "\nPrazo financiamento: " + prazoFinanciamento +
+                "\nPrazo financiamento: " + prazoFinanciamento + " ano(s)" +
                 "\nTaxa de juros anual: " + taxaJurosAnual + "%" +
                 "\nValor Mensal: R$ " + String.format("%.2f",calcularPagamentoMensal()) +
                 "\nValor total: R$ " + String.format("%.2f", calcularTotalPagamento());
     }
+
 }
