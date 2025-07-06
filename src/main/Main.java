@@ -23,27 +23,23 @@ public class Main {
 
 
             if(tipo.equals("Casa")){
-                Casa casa = new Casa(valorImovel,taxaJurosAnual,prazoFinanciamento);
+                Casa casa = new Casa(valorImovel,taxaJurosAnual,prazoFinanciamento, usuario.areaConstruida(), usuario.tamanhoDoTerreno());
                 financiamentos.add(casa);
                 System.out.println(casa.toString());
 
             }
             else if(tipo.equals("Apartamento")){
-                Apartamento apartamento = new Apartamento(valorImovel,taxaJurosAnual,prazoFinanciamento);
+                Apartamento apartamento = new Apartamento(valorImovel,taxaJurosAnual,prazoFinanciamento, usuario.numeroDeVagas(), usuario.numeroDoAndar());
                 financiamentos.add(apartamento);
                 System.out.println(apartamento.toString());
             }
             else if (tipo.equals("Terreno")){
-                Terreno terreno = new Terreno(valorImovel,taxaJurosAnual,prazoFinanciamento);
+                Terreno terreno = new Terreno(valorImovel,taxaJurosAnual,prazoFinanciamento, usuario.TiposTerrenos());
                 financiamentos.add(terreno);
                 System.out.println(terreno.toString());
             }
         }
         while (financiamentos.size() < 3);
-
+        System.out.println(financiamentos.toString());
     }
-
-
-
-
 }

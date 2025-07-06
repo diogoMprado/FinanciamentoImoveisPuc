@@ -1,5 +1,6 @@
 package util;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class InterfaceUsuario {
@@ -8,8 +9,7 @@ public class InterfaceUsuario {
 
     public String Categorias (){
         System.out.print("Informe o tipo de financiamento(CASA/APARTAMENTO/TERRENO): ");
-        String tipo = sc.nextLine();
-        return tipo;
+        return sc.nextLine();
     }
 
 
@@ -52,5 +52,70 @@ public class InterfaceUsuario {
         }
         while(juros <= 0 || juros > 1000);
         return juros;
+    }
+
+    public double areaConstruida(){
+        double area;
+        do {
+            System.out.print("Informe quantos m² de área contruída: ");
+            area = sc.nextDouble();
+            if (area <= 0) {
+                System.out.println("Informe um de área contruída válida!");
+            }
+        }
+        while (area <= 0);
+        return area;
+    }
+
+    public double tamanhoDoTerreno(){
+        double tamanho;
+        do {
+            System.out.print("Informe o Tamanho do Terreno: ");
+            tamanho = sc.nextDouble();
+            if (tamanho <= 0) {
+                System.out.println("Informe um tamanho de terreno válido!");
+            }
+        }
+        while (tamanho <= 0);
+        return tamanho;
+    }
+
+    public int numeroDeVagas(){
+        int numeroDeVagas;
+        do {
+            System.out.print("Informe o numero de Vagas: ");
+            numeroDeVagas = sc.nextInt();
+            if (numeroDeVagas <= 0) {
+                System.out.println("Informe um número de vagas válido!");
+            }
+        }
+        while (numeroDeVagas <= 0);
+        return numeroDeVagas;
+    }
+
+    public int numeroDoAndar(){
+        int numeroDoAndar;
+        do {
+            System.out.print("Informe o numero do andar: ");
+            numeroDoAndar = sc.nextInt();
+            if (numeroDoAndar < 0) {
+                System.out.println("Informe um numero de andar válido!");
+            }
+        }
+        while (numeroDoAndar < 0);
+        return numeroDoAndar;
+    }
+
+    public String TiposTerrenos() {
+        String tipoDeZona;
+        do{
+            System.out.print("Informe o tipo de Zona (Residencial ou Comercial): ");
+            tipoDeZona = sc.next();
+            if (tipoDeZona == null) {
+                System.out.println("Informe o tipo de Zona!");
+            }
+        }
+        while (tipoDeZona == null);
+        return tipoDeZona;
     }
 }

@@ -1,8 +1,21 @@
 package modelo;
 
+import Enums.TiposTerrenos;
+
 public class Terreno extends Financiamento{
-    public Terreno(double valorImovel, double taxaJurosAnual, int prazoFinanciamento) {
+
+    private final String tipoDeZona;
+
+    public Terreno(double valorImovel, double taxaJurosAnual, int prazoFinanciamento, String tipoDeZona) {
         super(valorImovel, taxaJurosAnual, prazoFinanciamento);
+        this.tipoDeZona = tipoDeZona;
+    }
+
+    public String getTipoDeZona() {
+        return tipoDeZona;
+    }
+
+    public void setTipoDeZona(String tipoDeZona) {
     }
 
     @Override
