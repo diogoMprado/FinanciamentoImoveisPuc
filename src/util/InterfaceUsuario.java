@@ -1,5 +1,8 @@
 package util;
 
+import Enums.TiposTerrenos;
+
+import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -14,108 +17,140 @@ public class InterfaceUsuario {
 
 
     // Recebe o valor do imóvel, com o teste "SE for maior que zero"
-    public double valorImovel(){
-        double valor;
-        do {
+    public double valorImovel() {
+        double valor = -1;
+        while (valor <= 0) {
             System.out.print("Informe o valor do Imóvel: ");
-            valor = sc.nextDouble();
-            if (valor <= 0) {
-                System.out.println("Informe um valor válido!");
+
+            try {
+                valor = sc.nextDouble();
+                if (valor <= 0) {
+                    System.out.println("Informe um valor válido!");
+                }
+            } catch (InputMismatchException e) { //Para quando digitar letras ou símbolos
+                System.out.println("Valor deve ser apenas números!");
+                sc.next();
             }
-        } while (valor <= 0);
+        }
         return valor;
     }
 
     // Recebe a quantidade de meses do financiamento, com o teste "SE for maior que zero"
     public int prazoFinanciamento(){
-        int prazo;
-        do {
-            System.out.print("Informe o Prazo de Financiamento: ");
-            prazo = sc.nextInt();
-            if (prazo <= 0){
-                System.out.println("Informe um Prazo de Financiamento maior que zero!");
+        int prazo = -1;
+        while (prazo <= 0) {
+            System.out.print("Informe o prazo de Financiamento: ");
+
+            try {
+                prazo = sc.nextInt();
+                if (prazo <= 0){
+                    System.out.println("Informe um Prazo de Financiamento maior que zero!");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Valor deve ser apenas números!");
+                sc.next();
             }
         }
-        while (prazo <= 0);
         return prazo;
     }
 
     // Recebe o valor da taxa de juros anual, com o teste "SE for maior que zero"
     public double taxaJurosAnual(){
-        double juros;
-        do {
-            System.out.print("Informe o taxa juros: ");
-            juros = sc.nextDouble();
-            if (juros <= 0 || juros > 1000) {
-                System.out.println("Informe um valor válido!");
+        double juros = -1;
+        while (juros <= 0) {
+            System.out.print("Informe a taxa de Juros: ");
+            try {
+                juros = sc.nextDouble();
+                if (juros <= 0){
+                    System.out.println("Informe a taxa de juros válida!");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Valor deve ser apenas números!");
+                sc.next();
             }
         }
-        while(juros <= 0 || juros > 1000);
         return juros;
     }
 
     public double areaConstruida(){
-        double area;
-        do {
+        double area = -1;
+        while (area <= 0) {
             System.out.print("Informe quantos m² de área contruída: ");
-            area = sc.nextDouble();
-            if (area <= 0) {
-                System.out.println("Informe um de área contruída válida!");
+            try {
+                area = sc.nextDouble();
+                if (area <= 0){
+                    System.out.println("Informe um de área contruída válida!");
+                }
+            } catch  (InputMismatchException e) {
+                System.out.println("Valor deve ser apenas números!");
+                sc.next();
             }
         }
-        while (area <= 0);
         return area;
     }
 
     public double tamanhoDoTerreno(){
-        double tamanho;
-        do {
-            System.out.print("Informe o Tamanho do Terreno: ");
-            tamanho = sc.nextDouble();
-            if (tamanho <= 0) {
-                System.out.println("Informe um tamanho de terreno válido!");
+        double tamanho = -1;
+        while (tamanho <= 0) {
+            System.out.print("Informe o tamanho do terreno: ");
+            try {
+                tamanho = sc.nextDouble();
+                if (tamanho <= 0){
+                    System.out.println("Informe um tamanho de terreno válido!");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Valor deve ser apenas números!");
+                sc.next();
             }
         }
-        while (tamanho <= 0);
         return tamanho;
     }
 
     public int numeroDeVagas(){
-        int numeroDeVagas;
-        do {
-            System.out.print("Informe o numero de Vagas: ");
-            numeroDeVagas = sc.nextInt();
-            if (numeroDeVagas <= 0) {
-                System.out.println("Informe um número de vagas válido!");
+        int numeroDeVagas = -1;
+        while (numeroDeVagas <= 0) {
+            System.out.print("Informe um numero de vagas: ");
+            try {
+                numeroDeVagas = sc.nextInt();
+                if (numeroDeVagas <= 0){
+                    System.out.println("Informe um número de vagas válido!");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Valor deve ser apenas números!");
+                sc.next();
             }
         }
-        while (numeroDeVagas <= 0);
         return numeroDeVagas;
     }
 
     public int numeroDoAndar(){
-        int numeroDoAndar;
-        do {
-            System.out.print("Informe o numero do andar: ");
-            numeroDoAndar = sc.nextInt();
-            if (numeroDoAndar < 0) {
-                System.out.println("Informe um numero de andar válido!");
+        int numeroDoAndar = -1;
+        while (numeroDoAndar <= 0) {
+            System.out.print("Informe um número de Andar: ");
+            try {
+                numeroDoAndar = sc.nextInt();
+                if (numeroDoAndar <= 0){
+                    System.out.println("Informe um numero de andar válido!");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Valor deve ser apenas números!");
+                sc.next();
             }
         }
-        while (numeroDoAndar < 0);
         return numeroDoAndar;
     }
 
-    public String TiposTerrenos() {
-        String tipoDeZona;
-        do{
-            System.out.print("Informe o tipo de Zona (Residencial ou Comercial): ");
-            tipoDeZona = sc.next();
-            if (tipoDeZona == null) {
+    public TiposTerrenos lerTipoTerreno() {
+        while(true){
+            System.out.print("Informe o tipo de Zona (Residencial, Comercial ou Rural): ");
+            String tipoTerreno = sc.next().trim().toUpperCase();
+
+            try{
+                return TiposTerrenos.valueOf(tipoTerreno);
+
+            } catch(IllegalArgumentException e){
                 System.out.println("Informe o tipo de Zona!");
             }
         }
-        while (tipoDeZona == null);
-        return tipoDeZona;
     }
 }
