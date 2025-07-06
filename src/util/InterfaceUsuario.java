@@ -106,6 +106,23 @@ public class InterfaceUsuario {
         return tamanho;
     }
 
+    public double acrescimo(){
+        double acrescimo = -1;
+        while (acrescimo <= 0) {
+            System.out.print("Informe acrescimo: ");
+            try {
+                acrescimo = sc.nextDouble();
+                if (acrescimo < 0){
+                    System.out.println("Informe um valor de acrescimo válido!");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Valor deve ser apenas números!");
+                sc.next();
+            }
+        }
+        return acrescimo;
+    }
+
     public int numeroDeVagas(){
         int numeroDeVagas = -1;
         while (numeroDeVagas <= 0) {

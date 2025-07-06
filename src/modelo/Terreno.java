@@ -4,18 +4,11 @@ import Enums.TiposTerrenos;
 
 public class Terreno extends Financiamento{
 
-    private final String tipoDeZona;
+    private final TiposTerrenos tipoDeZona;
 
-    public Terreno(double valorImovel, double taxaJurosAnual, int prazoFinanciamento, String tipoDeZona) {
+    public Terreno(double valorImovel, double taxaJurosAnual, int prazoFinanciamento, TiposTerrenos tipoDeZona) {
         super(valorImovel, taxaJurosAnual, prazoFinanciamento);
         this.tipoDeZona = tipoDeZona;
-    }
-
-    public String getTipoDeZona() {
-        return tipoDeZona;
-    }
-
-    public void setTipoDeZona(String tipoDeZona) {
     }
 
     @Override

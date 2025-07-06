@@ -5,6 +5,8 @@ import modelo.Casa;
 import modelo.Financiamento;
 import modelo.Terreno;
 import util.InterfaceUsuario;
+
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class Main {
 
 
             if(tipo.equals("Casa")){
-                Casa casa = new Casa(valorImovel,taxaJurosAnual,prazoFinanciamento, usuario.areaConstruida(), usuario.tamanhoDoTerreno());
+                Casa casa = new Casa(valorImovel,taxaJurosAnual,prazoFinanciamento, usuario.areaConstruida(), usuario.tamanhoDoTerreno(), usuario.acrescimo());
                 financiamentos.add(casa);
                 System.out.println(casa.toString());
 
@@ -34,12 +36,27 @@ public class Main {
                 System.out.println(apartamento.toString());
             }
             else if (tipo.equals("Terreno")){
-                Terreno terreno = new Terreno(valorImovel,taxaJurosAnual,prazoFinanciamento, usuario.TiposTerrenos());
+                Terreno terreno = new Terreno(valorImovel,taxaJurosAnual,prazoFinanciamento, usuario.lerTipoTerreno());
                 financiamentos.add(terreno);
                 System.out.println(terreno.toString());
             }
         }
         while (financiamentos.size() < 3);
+        FileWriter fw = null;
+
+        try{
+            fw = new FileWriter("Financiamentos.txt");
+            fw.write("LISTA DE FINANCIAMENTOS:\n\n");
+            int contador = 0;
+            while(contador < financiamentos.size()){
+                fw.write(financiamentos.get(contador).toString() + "\n\n");
+                contador++;
+            }
+            fw.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         System.out.println(financiamentos.toString());
     }
 }

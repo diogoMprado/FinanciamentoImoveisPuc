@@ -13,18 +13,6 @@ public abstract class Financiamento {
         this.prazoFinanciamento = prazoFinanciamento;
     }
 
-    public int getPrazoFinanciamento() {
-        return prazoFinanciamento;
-    }
-
-    public double getTaxaJurosAnual() {
-        return taxaJurosAnual;
-    }
-
-    public double getValorImovel() {
-        return valorImovel;
-    }
-
     public double calcularPagamentoMensal(){
         return this.valorImovel / (this.prazoFinanciamento * 12) * (1 + (this.taxaJurosAnual / 12));
     }
