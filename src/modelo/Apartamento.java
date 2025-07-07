@@ -24,6 +24,7 @@ public class Apartamento extends Financiamento{
     }
     @Override
     public String toString() {
-        return super.toString();
+        return super.toString()+ "\nNúmero de vagas: " + this.numeroDeVagas +
+                "\nNúmero do andar: " + this.numeroDoAndar + "\n";
     }
 }

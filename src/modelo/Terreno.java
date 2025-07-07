@@ -18,6 +18,6 @@ public class Terreno extends Financiamento{
 
     @Override
     public String toString(){
-        return super.toString();
+        return super.toString() + "Tipo de Zona: " + this.tipoDeZona;
     }
 }

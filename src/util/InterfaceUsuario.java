@@ -1,18 +1,27 @@
 package util;
 
+import Enums.Categorias;
 import Enums.TiposTerrenos;
 
 import java.util.InputMismatchException;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class InterfaceUsuario {
 
     Scanner sc = new Scanner(System.in);
 
-    public String Categorias (){
-        System.out.print("Informe o tipo de financiamento(CASA/APARTAMENTO/TERRENO): ");
-        return sc.nextLine();
+    public Categorias tipoFinanciamento() {
+        while (true) {
+            System.out.print("Informe o tipo de financiamento(CASA/APARTAMENTO/TERRENO): ");
+            String tipoDeFinanciamento = sc.next().trim().toUpperCase();
+
+            try {
+                return Categorias.valueOf(tipoDeFinanciamento);
+
+            } catch (IllegalArgumentException e) {
+                System.out.println("Tipo de financiamento incorreto!");
+            }
+        }
     }
 
 
@@ -75,11 +84,11 @@ public class InterfaceUsuario {
     public double areaConstruida(){
         double area = -1;
         while (area <= 0) {
-            System.out.print("Informe quantos m² de área contruída: ");
+            System.out.print("Informe quantos m² de área construída: ");
             try {
                 area = sc.nextDouble();
                 if (area <= 0){
-                    System.out.println("Informe um de área contruída válida!");
+                    System.out.println("Informe um valor de área construída válida!");
                 }
             } catch  (InputMismatchException e) {
                 System.out.println("Valor deve ser apenas números!");
@@ -89,14 +98,14 @@ public class InterfaceUsuario {
         return area;
     }
 
-    public double tamanhoDoTerreno(){
+    public double tamanhoDoTerreno(double area){
         double tamanho = -1;
-        while (tamanho <= 0) {
+        while (tamanho <= 0 || tamanho < area) {
             System.out.print("Informe o tamanho do terreno: ");
             try {
                 tamanho = sc.nextDouble();
-                if (tamanho <= 0){
-                    System.out.println("Informe um tamanho de terreno válido!");
+                if (tamanho <= 0 || tamanho < area){
+                    System.out.println("Valor inválido!");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Valor deve ser apenas números!");
@@ -109,11 +118,11 @@ public class InterfaceUsuario {
     public double acrescimo(){
         double acrescimo = -1;
         while (acrescimo <= 0) {
-            System.out.print("Informe acrescimo: ");
+            System.out.print("Informe acréscimo: ");
             try {
                 acrescimo = sc.nextDouble();
                 if (acrescimo < 0){
-                    System.out.println("Informe um valor de acrescimo válido!");
+                    System.out.println("Informe um valor de acréscimo válido!");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Valor deve ser apenas números!");
@@ -166,7 +175,7 @@ public class InterfaceUsuario {
                 return TiposTerrenos.valueOf(tipoTerreno);
 
             } catch(IllegalArgumentException e){
-                System.out.println("Informe o tipo de Zona!");
+                System.out.println("Tipo de Zona inválida!");
             }
         }
     }

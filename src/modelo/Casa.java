@@ -37,6 +37,7 @@ public class Casa extends Financiamento {
 
     @Override
     public String toString() {
-        return super.toString();
+        return super.toString() + "\nÁrea construída: " + String.format("%.2f", this.areaConstruida) +
+                "\nTamanho do terreno: " + String.format("%.2f",this.tamanhoDoTerreno) + "\n";
     }
 }

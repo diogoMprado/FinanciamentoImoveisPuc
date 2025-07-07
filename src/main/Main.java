@@ -18,27 +18,26 @@ public class Main {
         List<Financiamento> financiamentos = new ArrayList<>();
         do{
             InterfaceUsuario usuario = new InterfaceUsuario();
-            String tipo = usuario.Categorias();
+            String tipo = String.valueOf(usuario.tipoFinanciamento());
             double valorImovel = usuario.valorImovel();
             int prazoFinanciamento = usuario.prazoFinanciamento();
             double taxaJurosAnual = usuario.taxaJurosAnual();
 
 
-            if(tipo.equals("Casa")){
-                Casa casa = new Casa(valorImovel,taxaJurosAnual,prazoFinanciamento, usuario.areaConstruida(), usuario.tamanhoDoTerreno(), usuario.acrescimo());
-                financiamentos.add(casa);
-                System.out.println(casa.toString());
-
-            }
-            else if(tipo.equals("Apartamento")){
-                Apartamento apartamento = new Apartamento(valorImovel,taxaJurosAnual,prazoFinanciamento, usuario.numeroDeVagas(), usuario.numeroDoAndar());
-                financiamentos.add(apartamento);
-                System.out.println(apartamento.toString());
-            }
-            else if (tipo.equals("Terreno")){
-                Terreno terreno = new Terreno(valorImovel,taxaJurosAnual,prazoFinanciamento, usuario.lerTipoTerreno());
-                financiamentos.add(terreno);
-                System.out.println(terreno.toString());
+            switch (tipo) {
+                case "CASA" -> {
+                    double areaCasa = usuario.areaConstruida();
+                    Casa casa = new Casa(valorImovel, taxaJurosAnual, prazoFinanciamento, areaCasa, usuario.tamanhoDoTerreno(areaCasa), usuario.acrescimo());
+                    financiamentos.add(casa);
+                }
+                case "APARTAMENTO" -> {
+                    Apartamento apartamento = new Apartamento(valorImovel, taxaJurosAnual, prazoFinanciamento, usuario.numeroDeVagas(), usuario.numeroDoAndar());
+                    financiamentos.add(apartamento);
+                }
+                case "TERRENO" -> {
+                    Terreno terreno = new Terreno(valorImovel, taxaJurosAnual, prazoFinanciamento, usuario.lerTipoTerreno());
+                    financiamentos.add(terreno);
+                }
             }
         }
         while (financiamentos.size() < 3);
@@ -57,6 +56,6 @@ public class Main {
         }catch(Exception e){
             e.printStackTrace();
         }
-        System.out.println(financiamentos.toString());
+        System.out.println("Financiamentos cadastrados com sucesso!");
     }
 }
