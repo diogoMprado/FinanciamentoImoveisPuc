@@ -1,6 +1,13 @@
 package modelo;
 
-public abstract class Financiamento {
+import util.AumentoMaiorDoQueJurosException;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+public abstract class Financiamento implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     protected double valorImovel;
     protected int prazoFinanciamento;
@@ -13,18 +20,22 @@ public abstract class Financiamento {
         this.prazoFinanciamento = prazoFinanciamento;
     }
 
-    public double calcularPagamentoMensal(){
+    public double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException {
         return this.valorImovel / (this.prazoFinanciamento * 12) * (1 + (this.taxaJurosAnual / 12));
     }
 
-    public double calcularTotalPagamento(){
+    public double calcularTotalPagamento() throws AumentoMaiorDoQueJurosException {
         return calcularPagamentoMensal() * (prazoFinanciamento * 12);
     }
     public String toString() {
-        return "Valor financiamento do imóvel: R$ " + String.format("%.2f",valorImovel) +
-                "\nPrazo financiamento: " + prazoFinanciamento + " ano(s)" +
-                "\nTaxa de juros anual: " + taxaJurosAnual + "%" +
-                "\nValor Mensal: R$ " + String.format("%.2f",calcularPagamentoMensal()) +
-                "\nValor total: R$ " + String.format("%.2f", calcularTotalPagamento());
+        try {
+            return "Valor financiamento do imóvel: R$ " + String.format("%.2f",valorImovel) +
+                    "\nPrazo financiamento: " + prazoFinanciamento + " ano(s)" +
+                    "\nTaxa de juros anual: " + String.format("%.2f",taxaJurosAnual) + "%" +
+                    "\nValor Mensal: R$ " + String.format("%.2f",calcularPagamentoMensal()) +
+                    "\nValor total: R$ " + String.format("%.2f", calcularTotalPagamento());
+        } catch (AumentoMaiorDoQueJurosException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

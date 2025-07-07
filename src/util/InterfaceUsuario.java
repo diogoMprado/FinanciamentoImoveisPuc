@@ -1,181 +1,109 @@
 package util;
 
-import Enums.Categorias;
-import Enums.TiposTerrenos;
+import enums.Categorias;
+import enums.TiposTerrenos;
+import modelo.Apartamento;
+import modelo.Casa;
+import modelo.Terreno;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class InterfaceUsuario {
-
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     public Categorias tipoFinanciamento() {
         while (true) {
-            System.out.print("Informe o tipo de financiamento(CASA/APARTAMENTO/TERRENO): ");
-            String tipoDeFinanciamento = sc.next().trim().toUpperCase();
-
+            System.out.print("Informe o tipo de financiamento (CASA/APARTAMENTO/TERRENO): ");
+            String linha = sc.nextLine().trim().toUpperCase();
+            if (linha.isEmpty()) continue;
             try {
-                return Categorias.valueOf(tipoDeFinanciamento);
-
+                return Categorias.valueOf(linha);
             } catch (IllegalArgumentException e) {
                 System.out.println("Tipo de financiamento incorreto!");
             }
         }
     }
 
+    public Casa lerCasa() {
+        System.out.println("=== Cadastro de CASA ===");
+        double valor     = lerDouble("Informe o valor do Imóvel: ", v -> v > 0, "Valor deve ser maior que zero!");
+        int    prazo     = lerInt   ("Informe o prazo de Financiamento (anos): ", p -> p > 0, "Prazo deve ser maior que zero!");
+        double juros     = lerDouble("Informe a taxa de juros anual (%): ", j -> j >= 0 && j <= 80, "Taxa inválida!");
+        double area      = lerDouble("Informe quantos m² de área construída: ", a -> a > 0, "Área deve ser maior que zero!");
+        double tamanho   = lerDouble("Informe o tamanho do terreno (m²): ",
+                t -> t >= area, "Terreno não pode ser menor que a área construída!");
+        double acrescimo = lerDouble("Informe acréscimo: ", ac -> ac >= 0, "Acréscimo inválido!");
 
-    // Recebe o valor do imóvel, com o teste "SE for maior que zero"
-    public double valorImovel() {
-        double valor = -1;
-        while (valor <= 0) {
-            System.out.print("Informe o valor do Imóvel: ");
-
-            try {
-                valor = sc.nextDouble();
-                if (valor <= 0) {
-                    System.out.println("Informe um valor válido!");
-                }
-            } catch (InputMismatchException e) { //Para quando digitar letras ou símbolos
-                System.out.println("Valor deve ser apenas números!");
-                sc.next();
-            }
-        }
-        return valor;
+        return new Casa(valor, juros, prazo, area, tamanho, acrescimo);
     }
 
-    // Recebe a quantidade de meses do financiamento, com o teste "SE for maior que zero"
-    public int prazoFinanciamento(){
-        int prazo = -1;
-        while (prazo <= 0) {
-            System.out.print("Informe o prazo de Financiamento: ");
+    public Apartamento lerApartamento() {
+        System.out.println("=== Cadastro de APARTAMENTO ===");
+        double valor = lerDouble("Informe o valor do Imóvel: ", v -> v > 0, "Valor deve ser maior que zero!");
+        int    prazo = lerInt   ("Informe o prazo de Financiamento (anos): ", p -> p > 0, "Prazo deve ser maior que zero!");
+        double juros = lerDouble("Informe a taxa de juros anual (%): ", j -> j >= 0 && j <= 80, "Taxa inválida!");
+        int    andar = lerInt   ("Informe o número do andar: ", n -> n > 0, "Andar inválido!");
+        int    vagas = lerInt   ("Informe o número de vagas: ", n -> n > 0, "Número de vagas inválido!");
 
-            try {
-                prazo = sc.nextInt();
-                if (prazo <= 0){
-                    System.out.println("Informe um Prazo de Financiamento maior que zero!");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Valor deve ser apenas números!");
-                sc.next();
-            }
-        }
-        return prazo;
+        return new Apartamento(valor, juros, prazo, vagas, andar);
     }
 
-    // Recebe o valor da taxa de juros anual, com o teste "SE for maior que zero"
-    public double taxaJurosAnual(){
-        double juros = -1;
-        while (juros <= 0) {
-            System.out.print("Informe a taxa de Juros: ");
-            try {
-                juros = sc.nextDouble();
-                if (juros <= 0){
-                    System.out.println("Informe a taxa de juros válida!");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Valor deve ser apenas números!");
-                sc.next();
-            }
-        }
-        return juros;
-    }
+    public Terreno lerTerreno() {
+        System.out.println("=== Cadastro de TERRENO ===");
+        double valor = lerDouble("Informe o valor do Imóvel: ", v -> v > 0, "Valor deve ser maior que zero!");
+        int    prazo = lerInt   ("Informe o prazo de Financiamento (anos): ", p -> p > 0, "Prazo deve ser maior que zero!");
+        double juros = lerDouble("Informe a taxa de juros anual (%): ", j -> j >= 0 && j <= 80, "Taxa inválida!");
+        TiposTerrenos tipoZona = lerTipoTerreno();
 
-    public double areaConstruida(){
-        double area = -1;
-        while (area <= 0) {
-            System.out.print("Informe quantos m² de área construída: ");
-            try {
-                area = sc.nextDouble();
-                if (area <= 0){
-                    System.out.println("Informe um valor de área construída válida!");
-                }
-            } catch  (InputMismatchException e) {
-                System.out.println("Valor deve ser apenas números!");
-                sc.next();
-            }
-        }
-        return area;
-    }
-
-    public double tamanhoDoTerreno(double area){
-        double tamanho = -1;
-        while (tamanho <= 0 || tamanho < area) {
-            System.out.print("Informe o tamanho do terreno: ");
-            try {
-                tamanho = sc.nextDouble();
-                if (tamanho <= 0 || tamanho < area){
-                    System.out.println("Valor inválido!");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Valor deve ser apenas números!");
-                sc.next();
-            }
-        }
-        return tamanho;
-    }
-
-    public double acrescimo(){
-        double acrescimo = -1;
-        while (acrescimo <= 0) {
-            System.out.print("Informe acréscimo: ");
-            try {
-                acrescimo = sc.nextDouble();
-                if (acrescimo < 0){
-                    System.out.println("Informe um valor de acréscimo válido!");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Valor deve ser apenas números!");
-                sc.next();
-            }
-        }
-        return acrescimo;
-    }
-
-    public int numeroDeVagas(){
-        int numeroDeVagas = -1;
-        while (numeroDeVagas <= 0) {
-            System.out.print("Informe um numero de vagas: ");
-            try {
-                numeroDeVagas = sc.nextInt();
-                if (numeroDeVagas <= 0){
-                    System.out.println("Informe um número de vagas válido!");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Valor deve ser apenas números!");
-                sc.next();
-            }
-        }
-        return numeroDeVagas;
-    }
-
-    public int numeroDoAndar(){
-        int numeroDoAndar = -1;
-        while (numeroDoAndar <= 0) {
-            System.out.print("Informe um número de Andar: ");
-            try {
-                numeroDoAndar = sc.nextInt();
-                if (numeroDoAndar <= 0){
-                    System.out.println("Informe um numero de andar válido!");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Valor deve ser apenas números!");
-                sc.next();
-            }
-        }
-        return numeroDoAndar;
+        return new Terreno(valor, juros, prazo, tipoZona);
     }
 
     public TiposTerrenos lerTipoTerreno() {
-        while(true){
-            System.out.print("Informe o tipo de Zona (Residencial, Comercial ou Rural): ");
-            String tipoTerreno = sc.next().trim().toUpperCase();
-
-            try{
-                return TiposTerrenos.valueOf(tipoTerreno);
-
-            } catch(IllegalArgumentException e){
+        while (true) {
+            System.out.print("Informe o tipo de Zona (RESIDENCIAL/COMERCIAL/RURAL): ");
+            String linha = sc.nextLine().trim().toUpperCase();
+            if (linha.isEmpty()) continue;
+            try {
+                return TiposTerrenos.valueOf(linha);
+            } catch (IllegalArgumentException e) {
                 System.out.println("Tipo de Zona inválida!");
+            }
+        }
+    }
+
+
+    private double lerDouble(String prompt, java.util.function.DoublePredicate validacao, String msgErro) {
+        while (true) {
+            System.out.print(prompt);
+            String linha = sc.nextLine().trim();
+            if (linha.isEmpty()) continue;
+            try {
+                double v = Double.parseDouble(linha);
+                if (!validacao.test(v)) {
+                    System.out.println(msgErro);
+                    continue;
+                }
+                return v;
+            } catch (NumberFormatException e) {
+                System.out.println("Valor deve ser apenas números!");
+            }
+        }
+    }
+
+    private int lerInt(String prompt, java.util.function.IntPredicate validacao, String msgErro) {
+        while (true) {
+            System.out.print(prompt);
+            String linha = sc.nextLine().trim();
+            if (linha.isEmpty()) continue;
+            try {
+                int v = Integer.parseInt(linha);
+                if (!validacao.test(v)) {
+                    System.out.println(msgErro);
+                    continue;
+                }
+                return v;
+            } catch (NumberFormatException e) {
+                System.out.println("Valor deve ser apenas números!");
             }
         }
     }

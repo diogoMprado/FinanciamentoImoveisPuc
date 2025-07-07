@@ -1,61 +1,96 @@
 package main;
 
-import modelo.Apartamento;
 import modelo.Casa;
 import modelo.Financiamento;
-import modelo.Terreno;
+import util.AumentoMaiorDoQueJurosException;
+import util.LeituraGravacaoArquivoTexto;
 import util.InterfaceUsuario;
 
-import java.io.FileWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
-
+    private static final Path ARQ_TEXTO = Paths.get("Financiamentos.txt");
+    private static final Path ARQ_SER = Paths.get("financiamentos.ser");
 
     public static void main(String[] args) {
+        InterfaceUsuario iu = new InterfaceUsuario();
+        List<Financiamento> lista = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
 
-        List<Financiamento> financiamentos = new ArrayList<>();
-        do{
-            InterfaceUsuario usuario = new InterfaceUsuario();
-            String tipo = String.valueOf(usuario.tipoFinanciamento());
-            double valorImovel = usuario.valorImovel();
-            int prazoFinanciamento = usuario.prazoFinanciamento();
-            double taxaJurosAnual = usuario.taxaJurosAnual();
+        boolean continuarCadastro = true;
+        while (continuarCadastro) {
+            boolean cadastroValido = false;
 
+            // LOOP DE CADASTRO
+            while (!cadastroValido) {
+                try {
+                    switch (iu.tipoFinanciamento()) {
+                        case CASA:
+                            Casa casa = iu.lerCasa();
+                            // loop para tratar Exceção
+                            while (true) {
+                                try {
+                                    casa.calcularPagamentoMensal();
+                                    break;  // sem exceção, sai do loop
+                                } catch (AumentoMaiorDoQueJurosException e) {
+                                    System.out.println(e.getMessage());
+                                    casa.setAcrescimo(e.getValorCorrigido());
+                                }
+                            }
+                            lista.add(casa);
+                            cadastroValido = true;
+                            break;
 
-            switch (tipo) {
-                case "CASA" -> {
-                    double areaCasa = usuario.areaConstruida();
-                    Casa casa = new Casa(valorImovel, taxaJurosAnual, prazoFinanciamento, areaCasa, usuario.tamanhoDoTerreno(areaCasa), usuario.acrescimo());
-                    financiamentos.add(casa);
-                }
-                case "APARTAMENTO" -> {
-                    Apartamento apartamento = new Apartamento(valorImovel, taxaJurosAnual, prazoFinanciamento, usuario.numeroDeVagas(), usuario.numeroDoAndar());
-                    financiamentos.add(apartamento);
-                }
-                case "TERRENO" -> {
-                    Terreno terreno = new Terreno(valorImovel, taxaJurosAnual, prazoFinanciamento, usuario.lerTipoTerreno());
-                    financiamentos.add(terreno);
+                        case APARTAMENTO:
+                            lista.add(iu.lerApartamento());
+                            cadastroValido = true;
+                            break;
+
+                        case TERRENO:
+                            lista.add(iu.lerTerreno());
+                            cadastroValido = true;
+                            break;
+                    }
+
+                } catch (InputMismatchException ime) {
+                    System.out.println("Entrada inválida — tente novamente.");
+                    sc.nextLine(); // limpa buffer
                 }
             }
+            // PERGUNTA SE QUER CONTINUAR
+            System.out.print("Deseja cadastrar outro financiamento? (S/N): ");
+            String resp = sc.next().trim().toUpperCase();
+            continuarCadastro = resp.equals("S");
         }
-        while (financiamentos.size() < 3);
-        FileWriter fw = null;
 
-        try{
-            fw = new FileWriter("Financiamentos.txt");
-            fw.write("LISTA DE FINANCIAMENTOS:\n\n");
-            int contador = 0;
-            while(contador < financiamentos.size()){
-                fw.write(financiamentos.get(contador).toString() + "\n\n");
-                contador++;
-            }
-            fw.close();
+        // GRAVAÇÃO E LEITURA DE ARQUIVO
+        try {
+            // TEXTO
+            LeituraGravacaoArquivoTexto.salvarComoTexto(lista, ARQ_TEXTO);
+            System.out.println("Texto gravado em " + ARQ_TEXTO);
 
-        }catch(Exception e){
-            e.printStackTrace();
+            List<String> linhas = LeituraGravacaoArquivoTexto.lerTexto(ARQ_TEXTO);
+            System.out.println("Conteúdo de " + ARQ_TEXTO + ":");
+            linhas.forEach(System.out::println);
+
+            // SERIALIZAÇÃO
+            LeituraGravacaoArquivoTexto.serializar(lista, ARQ_SER);
+            System.out.println("Lista serializada em " + ARQ_SER);
+
+            List<Financiamento> desser = LeituraGravacaoArquivoTexto.desserializar(ARQ_SER);
+            System.out.println("Desserializados:");
+            desser.forEach(f -> {
+                System.out.println(f);
+                System.out.println("---");
+            });
+
+        } catch (Exception e) {
+            System.err.println("Erro de I/O: " + e.getMessage());
         }
-        System.out.println("Financiamentos cadastrados com sucesso!");
     }
 }

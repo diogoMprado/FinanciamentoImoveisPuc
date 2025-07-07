@@ -2,7 +2,12 @@ package modelo;
 
 import util.AumentoMaiorDoQueJurosException;
 
-public class Casa extends Financiamento {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Casa extends Financiamento implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final double areaConstruida;
     private final double tamanhoDoTerreno;
@@ -15,29 +20,28 @@ public class Casa extends Financiamento {
         this.acrescimo = acrescimo;
     }
 
-    private void testeValorJuros (double acrescimo, double valorJuros){
-        if (acrescimo > valorJuros){
-            throw new AumentoMaiorDoQueJurosException("O valor do acrécimo é maior que o valor dos juros! Será corrigido.");
-        }
-    }
 
     @Override
-    public double calcularPagamentoMensal(){
+    public double calcularPagamentoMensal() throws AumentoMaiorDoQueJurosException {
         double metadeValorJuros = (super.calcularPagamentoMensal() - (this.valorImovel / (this.prazoFinanciamento * 12)))/2;
-//80 for maior do que a metade do valor dos juros da mensalidade.
-        try{
-            testeValorJuros(acrescimo, metadeValorJuros);
+        double base = super.calcularPagamentoMensal();
+
+
+        if (this.acrescimo > metadeValorJuros){
+            throw new AumentoMaiorDoQueJurosException("O valor do acrécimo é maior que a metade dos juros!",metadeValorJuros);
         }
-        catch (AumentoMaiorDoQueJurosException e){
-            System.out.println(e.getMessage());
-            this.acrescimo = metadeValorJuros;
-        }
-        return super.calcularPagamentoMensal() + this.acrescimo;
+        return base + this.acrescimo;
+    }
+
+    //PERMITE AJUSTAR O ACRÉSCIMO CASO TENHA ALGUMA EXCEÇÃO
+    public void setAcrescimo(double acrescimo) {
+        this.acrescimo = acrescimo;
     }
 
     @Override
     public String toString() {
-        return super.toString() + "\nÁrea construída: " + String.format("%.2f", this.areaConstruida) +
-                "\nTamanho do terreno: " + String.format("%.2f",this.tamanhoDoTerreno) + "\n";
+        return super.toString() + "\nÁrea construída: " + String.format("%.2f", this.areaConstruida) + "m²" +
+                "\nTamanho do terreno: " + String.format("%.2f",this.tamanhoDoTerreno) + "m²"
+                + "\nValor acrescimo: " + String.format("%.2f",this.acrescimo) + "\n";
     }
 }
